@@ -10,7 +10,6 @@ module.exports.getMyMovies = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-  return true;
 };
 
 module.exports.createMovies = async (req, res, next) => {
@@ -38,10 +37,10 @@ module.exports.createMovies = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequestError('Переданы некорректные данные'));
+    } else {
+      next(err);
     }
-    next(err);
   }
-  return true;
 };
 
 module.exports.deleteMovies = async (req, res, next) => {
@@ -64,8 +63,8 @@ module.exports.deleteMovies = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequestError('Переданы некорректные данные'));
+    } else {
+      next(err);
     }
-    next(err);
   }
-  return true;
 };

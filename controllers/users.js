@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const { BadRequestError } = require('../errors/BadRequestError');
-const { NotFoundError } = require('../errors/NotFoundError');
 const { ConflictError } = require('../errors/ConflictError');
 
 module.exports.getUsers = async (req, res, next) => {
@@ -24,15 +23,13 @@ module.exports.updateUserInfo = async (req, res, next) => {
     });
     res.status(200).send(users);
   } catch (err) {
-    if (err.name === 'CastError') {
-      throw new NotFoundError('Запрашиваемый пользователь не найден');
-    }
     if (err.name === 'Validation failed') {
       next(new BadRequestError('Переданы некорректные данные'));
     }
     if (err.name === 'MongoServerError') {
       next(new ConflictError('Пользователь с таким электнонным адресом уже существует'));
+    } else {
+      next(err);
     }
-    next(err);
   }
 };

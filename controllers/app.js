@@ -26,8 +26,9 @@ module.exports.createUsers = async (req, res, next) => {
     }
     if (err.name === 'MongoServerError') {
       next(new ConflictError('Пользователь с таким электнонным адресом уже зарегистрирован'));
+    } else {
+      next(err);
     }
-    next(err);
   }
 };
 
@@ -47,8 +48,9 @@ module.exports.login = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequestError('Переданы некорректные данные'));
+    } else {
+      next(err);
     }
-    next(err);
   }
 };
 

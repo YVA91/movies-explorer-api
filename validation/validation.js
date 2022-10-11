@@ -21,7 +21,7 @@ module.exports.validationCreateMovies = celebrate({
     thumbnail: Joi.string().required().custom(validatorUrl),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    movieId: Joi.string().required(),
+    movieId: Joi.number().required(),
   }),
 });
 
@@ -33,7 +33,7 @@ module.exports.validationMovieId = celebrate({
 
 module.exports.validationUpdateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().email(),
   }),
 });
