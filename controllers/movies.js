@@ -13,11 +13,11 @@ module.exports.getMyMovies = async (req, res, next) => {
 };
 
 module.exports.createMovies = async (req, res, next) => {
+  const owner = req.user._id;
   const {
     country,
     director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN,
   } = req.body;
-  const owner = req.user._id;
   try {
     const film = await Movie({
       country,
