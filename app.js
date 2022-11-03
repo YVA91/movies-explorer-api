@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const router = require('./routes/index');
 const { errorHandler } = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -11,8 +12,14 @@ const { limiter } = require('./middlewares/limit');
 
 const { NODE_ENV, DB_CONN } = process.env;
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://yva.diploma.nomoredomains.icu', 'https://yva.diploma.nomoredomains.icu'],
+    credentials: true,
+  }),
+);
 app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);

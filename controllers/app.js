@@ -44,7 +44,11 @@ module.exports.login = async (req, res, next) => {
       throw new UnauthorizedError('Неправильные почта или пароль');
     }
     const token = jwt.sign({ _id: users._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
-    res.status(200).cookie('jwt', token, { maxAge: 3600000, httpOnly: true, sameSite: true }).send({ token });
+    res.status(200).cookie('jwt', token, { maxAge: 3600000, httpOnly: true, sameSite: true }).send({
+      token,
+      email: users.email,
+      name: users.name,
+    });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequestError('Переданы некорректные данные'));
@@ -56,7 +60,7 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.clearCookie = async (req, res, next) => {
   try {
-    res.status(200).clearCookie('jwt').send('cookie cleared');
+    res.status(200).clearCookie('jwt').send({ message: 'Вы успешно вышли' });
   } catch (err) {
     next(err);
   }
